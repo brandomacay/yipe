@@ -29,7 +29,7 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: java-app
-          path: '${{ github.workspace }}/build/libs/piped-1.0.jar'
+          path: '${{ github.workspace }}/build/libs/*.jar'
 
   deploy:
     runs-on: windows-latest
@@ -42,7 +42,7 @@ jobs:
 
     steps:
 
-      
+
       - name: Login to Azure
         uses: azure/login@v2
         with:
@@ -56,4 +56,4 @@ jobs:
         with:
           app-name: 'yipe'
           slot-name: 'Production'
-          package: 'piped-1.0.jar'
+          package: '*.jar'
