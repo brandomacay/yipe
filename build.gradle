@@ -2,6 +2,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "8.1.1"
     id "java"
     id "eclipse"
+    id "com.microsoft.azure.azurewebapp" version "1.7.1"
 }
 
 repositories {
