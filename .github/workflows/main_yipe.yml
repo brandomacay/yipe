@@ -11,7 +11,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -24,35 +24,34 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew build
-      
+        
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
-          name: yipe
-          path: '${{ github.workspace }}/build/libs/*.jar'
-
+          name: java-app
+          path: '${{ github.workspace }}/build/libs/piped-1.0.jar'
 
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
     needs: build
     environment:
       name: 'Production'
       url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
     permissions:
       id-token: write #This is required for requesting the JWT
-  
+
     steps:
       - name: Download artifact from build job
         uses: actions/download-artifact@v4
         with:
-          name: yipe
+          name: java-app
       
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_3A3FBB4B45E0440A927E822035058F31 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_EA2ADDF33706446E90B943762C0A206B }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_2B8ED9C73863446B91EADFBC0E0569A5 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_CBACE2A8611743D697BEA55825619E69 }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_86E5EFE8BD3B415692B8536306F58CB6 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_9DD0A400F8F440A58CE846FEB176FBA8 }}
 
       - name: Deploy to Azure Web App
         id: deploy-to-webapp
@@ -60,5 +59,4 @@ jobs:
         with:
           app-name: 'yipe'
           slot-name: 'Production'
-          package: '*.jar'
-          
+          package: 'piped-1.0.jar'
